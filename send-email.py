@@ -2,45 +2,60 @@
 #
 # Function to send an email. To be called from Domoticz rule
 #
-# Blochly Usage:    Start Script: <optional path to script>/hms-send-email.sh  
-#                   with parameter(s): "<message>" "<subject>" "<email address>"     
+# Blochly Usage:    Start Script: <optional path to script>/send-email.sh  
+#                   with parameter(s): "<message>" "<subject>" "<email address>"  "Y/N datetime stamp"
 #                                       - all arguements are optional and then defaults will apply
 #                                       - provide null "" if subsequent arguements
-#                   
 #
-# 1st arguement: message text
+# 1. message text can send "+text" to append text to default message text. 
 #       Examples:   "My message"    =>  "My message"
 #                   "" or omitted   =>  "DefaultMessage"
-# 2nd optional arguement: subject - can send "+text" to append text to default subject. Set to "" if having a 3rd and no 2nd arguenment.
+#                   "+extra text"   =>  "DefaultMessage extra text"
+# 2. subject - can send "+text" to append text to default subject. 
 #       Examples:   "Alarm Alert"  =>  "Alarm Alert",  "+Warning"  =>  "Default Subject Warning", 
 #                   "" or omitted  =>  "Default Subject"
-# 3rd optional arguement: email addresses(s) either full addresses separated by commas or recipient name(s) with the @domain as per TO_ADDRESS.
+# 3. email addresses(s) either full addresses separated by commas or recipient name(s) with the @domain as per TO_ADDRESS.
 #       Examples:   "" or omitted =>  "defaultname<defaultname@defaultdomain.com>"
 #                   "realname<thisname@thisdomain.com>" =>  "realname<thisname@thisdomain.com>"
 #                   "thisname"  =>  "<thisname@defaultdomain.com>"
 #                   "thisname1,thisname2"   =>  "<thisname1@defaultdomain.com>,<thisname2@defaultdomain.com>"
+# 4. datetimestamp - set to Y if the message is to be appended with a date and time stamp
+#                   Format is according to the DATETIMEFORMAT setting
+#       Examples when Y: and DATETIMEFORMAT= " at %Y-%m-%d %H:%M:%S"
+#                   "My message text"   =>  "My message text at 2020-03-10 13:12:45"
 #
 # Future possible enhancements to include error handling, logging, SSL 
 #
-# Version 2
-# AEC 2020-03-05
+# Version 2.1   
+#       Added date & time stamp option
+#       Configutation setting are now in a send-email-config.yml file
+# AEC 2020-03-10
 # License: GNU General Public License v3.0
 #
-HOST = 'auth.smtp.my-ISP-domain.co.uk'         
-PORT = 587                                   
-LOGIN_ADDRESS = 'myname@my-email-domain.me.uk' 
-PASSWORD = 'my-password'
-FROM_ADDRESS = 'My Name<my-name@myemail-domain.me.uk>'
-TO_ADDRESS = 'Recipient Name<recipient-name@their-email-addr.me.uk>' # exclude the real name and <> if parameter 3 is provided
-SUBJECT = "My Subject"      # default subject. 
-MESSAGE = "My Message"      # default message. 
-
-# No user setting beyond this line
+# User setting are defined in the send-sms-config.yml file
 
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import sys
+import os
+from datetime import datetime
+import yaml         # sudo apt-get install python-yaml
+
+# get configuration settings
+with open(os.path.join(sys.path[0], "send-email.yml"), 'r') as configfile:
+    config = yaml.safe_load(configfile)
+
+HOST = config['HOST']
+PORT = config['PORT']
+LOGIN_ADDRESS = config['LOGIN_ADDRESS']
+PASSWORD = config['PASSWORD']
+TO_ADDRESS = config['TO_ADDRESS']
+FROM_ADDRESS = config['FROM_ADDRESS']
+SUBJECT = config['SUBJECT']
+MESSAGE = config['MESSAGE']
+DATETIMESTAMP = config['DATETIMESTAMP']
+DATETIMEFORMAT = config['DATETIMEFORMAT']
 
 class sendemail:
     def __init__(self):
@@ -51,7 +66,11 @@ class sendemail:
         if len(arguements) >= 2:
             message = arguements[1]
             if message != "":       # not null
-                message = arguements[1]
+                # if 1st character is a + then append to the default MESSAGE
+                if message[0:1] == "+":
+                    message = MESSAGE + " " + message[1:]
+                else:
+                    message = arguements[1]          
             else:
                 message = MESSAGE
         else:
@@ -93,6 +112,19 @@ class sendemail:
             newAddressList = newAddressList + comma + thisAddress
             comma = ", "
         #print(newAddressList , subject)
+
+        # datetimestamp is an optional 4th user arguement 
+        if len(arguements) >= 5:
+            if arguements[4] == "Y":   
+                datetimestamp = "Y" 
+            else:
+                datetimestamp = "N" 
+        else:
+            datetimestamp = DATETIMESTAMP
+        # apply datetimestamp option, either default or message override option
+        if datetimestamp == "Y":
+            now = datetime.now()
+            message = message + now.strftime(DATETIMEFORMAT)
 
         # set up the SMTP server
         s = smtplib.SMTP(HOST, PORT)
