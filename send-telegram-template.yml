@@ -1,0 +1,11 @@
+HOST:           'api.telegram.org'                      # Telegram's API host address
+URL:            '/bot'                                  # Telegram's bot url. This is appended to the Host name
+API_KEY:        '<YOUR API TOKEN>'  # your API key
+MESSAGE:        'Your default message'                  # default message
+CHAT_ID:        '1234567890'                            # Your bot's Chat ID
+PARSE:          'plain'                                 # default message formatting: 'plain', 'markdown' or 'html'
+                                                        # Markdown is Telegram's V2 formatting. Note escapes are required.
+                                                        # Testing did not succeed with markdown formatting.
+SILENT:         'N'                                     # default silence option, Y or N
+DATETIMESTAMP:  'Y'                                     # default datetimestamp option. set either Y or N
+DATETIMEFORMAT: ' at %Y-%m-%d %H:%M:%S'                 # default datetimestamp display format.

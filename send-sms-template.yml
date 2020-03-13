@@ -1,0 +1,11 @@
+HOST:           'api.smsprovide.com'        # the SMS Service Provider's Host addreess
+                                            # TheSMSWorks is 'api.thesmsworks.co.uk'
+URL:            'your providers url'        # the Host's url. This is appended to the Host name
+                                            # TheSMSWorks is '/v1/message/send'
+API_KEY:        'JWT your API key'          # your API key preceded by "JWT" and a space
+MESSAGE:        'your default message'      # default message
+TO_TELNO:       '07777777777'               # default recipient(s) no.(s) separated by a comma with no spaces
+SENDER_ID:      '07666666666'               # default sender's number or identification
+MESSAGE_TAG:    'your default tag'          # default message tag
+DATETIMESTAMP:  'Y'                         # default datetimestamp option. set either Y or N
+DATETIMEFORMAT: ' at %Y-%m-%d %H:%M:%S'     # default datetimestamp display format

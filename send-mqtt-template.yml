@@ -1,0 +1,11 @@
+HOST: '192.168.x.xx'   # IP address of your MQTT Broker
+PORT: 1883             # and its port, usually 1883
+CLIENT_ID: 'myID'      # default client identified. An identifier ensures the broker retains your mqtt data between sessions
+TOPIC: 'mytopic/alert' # default Topic
+VALUE: '0'             # default Value
+QOS: 0                 # default Quality of Service is fixed for now. 0 means the Broker does not send a delivery receipt
+RETAIN: False          # default Retain is fixed false for now
+SSL_CERT: ''           # default Path & filename of the certificate. Currently not supported
+SSL_TLS: 2             # default TLS version. Currently not supported
+DATETIMESTAMP:  'N'     # default datetimestamp option. set either Y or N
+DATETIMEFORMAT: ' at %Y-%m-%d %H:%M:%S'  # default datetimestamp display format

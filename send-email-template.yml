@@ -1,0 +1,10 @@
+HOST:           'auth.smtp.my-ISP-domain.co.uk'                     # your ISP's email server
+PORT:           587                                                 # server's port, normally 587
+LOGIN_ADDRESS:  'myname@my-email-domain.me.uk'                      # the login address to your email account
+PASSWORD:       'my-password'                                       # your password
+TO_ADDRESS:     'To Name<name@their-email-addr.me.uk>'              # exclude real name and <> if next arguement is in calling string
+FROM_ADDRESS:   'My Name<my-name@myemail-domain.me.uk>'             # default from address
+SUBJECT:        'My Subject'                                        # default subject 
+MESSAGE:        'My Message'                                        # default message
+DATETIMESTAMP:  'Y'                                                 # default datetimestamp option. set either Y or N
+DATETIMEFORMAT: '' at %Y-%m-%d %H:%M:%S'                             # default datetimestamp display format
