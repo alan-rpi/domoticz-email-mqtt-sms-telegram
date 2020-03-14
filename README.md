@@ -125,33 +125,56 @@ Note that the email account password, sms API key and telegram API key and chat 
 
 ## send-email
 
-Blochly Usage:      Start Script: <optional path to bash script/>send-email.sh  
-                    with parameter(s): "<message>" "<subject>" "<email address(s)>" "<Y/N timestamp option">    
+Blochly Usage:      Start Script: 
+```
+<optional path to bash script/>send-email.sh
+```
+with parameter(s):
+```
+"<message>" "<subject>" "<email address(s)>" "<Y/N timestamp option">  
+```
                         - all arguements are optional and then defaults will apply
                         - provide null "" if there are subsequent arguements
 
 Arguement values: See the comments at the start of the python script. Some arguements allow a "+" prefix to suffix the default value.
 
 ## send-mqtt
- Blochly Usage:    Start Script: <optional path to bash script/>send-mqtt.sh  
-                   with parameter(s): "<topic>" "<value>" "<Y/N timestamp option">    
+ Blochly Usage:    Start Script: 
+ ```
+ <optional path to bash script/>send-mqtt.sh
+ ```
+ with parameter(s): 
+ ```
+ "<topic>" "<value>" "<Y/N timestamp option">    
+ ```
                         - all arguements are optional and then defaults will apply
                         - provide null "" if there are subsequent arguements
 
 Arguement values: See the comments at the start of the python script. Some arguements allow a "+" prefix to suffix the default value.
 
 ## send-sms
- Blochly Usage:    Start Script: <optional path to bash script/>send-sms.sh  
-                   with parameter(s): "<message text>" "<to number(s)>"  "<sender number or ID>"  
-                                      "<message tag>"  "<Y/N timestamp option"> 
+ Blochly Usage:    Start Script: 
+ ```
+ <optional path to bash script/>send-sms.sh
+ ```
+ with parameter(s): 
+ ```
+ "<message text>" "<to number(s)>"  "<sender number or ID>"  "<message tag>"  "<Y/N timestamp option"> 
+ ```
                         - all arguements are optional and then defaults will apply
                         - provide null "" if there are subsequent arguements
 
 Arguement values: See the comments at the start of the python script. Some arguements allow a "+" prefix to suffix the default value.
 
 ## send-telegram
-Blochly Usage:    Start Script: <optional path to script>/send-telegram.sh  
-                   with parameter(s): "<message text>" "<chat ID>" "<parse option>"                   "<Y/N silent option>"  "<Y/N timestamp option"> 
+Blochly Usage:    Start Script: 
+```
+<optional path to script>/send-telegram.sh  
+```
+with parameter(s): 
+```
+"<message text>" "<chat ID>" "<parse option>"   "<Y/N silent option>"  "<Y/N timestamp option"> 
+```
                         - all arguements are optional and then defaults will apply
                         - provide null "" if subsequent arguements
                    
