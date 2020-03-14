@@ -93,7 +93,10 @@ class sendemail:
         # to addresses are an optional 3rd parameter
         # may be one or more email addresses, either full or just names, separated by commas
         if len(arguements) >= 4:
-            toAddressList = arguements[3]
+            if arguements[3] == "":    
+                toAddressList = TO_ADDRESS
+            else:    
+                toAddressList = arguements[3]
         else:
             toAddressList = TO_ADDRESS
         toAddresses = toAddressList.split(",")
@@ -137,7 +140,7 @@ class sendemail:
         msg['From']=FROM_ADDRESS
         msg['Subject']=subject
         msg.attach(MIMEText(message, 'plain'))
-
+        print("Email sent. To: "+ newAddressList + ", From: " + FROM_ADDRESS + ", Subject: " + subject + ", Message (first 40 chars):" + message[0:40])
         # send the message via the server set up earlier.
         s.send_message(msg)
         del msg
