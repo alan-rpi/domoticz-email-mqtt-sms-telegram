@@ -1,5 +1,5 @@
-# domoticz-email-mqtt
-Simple scripts to send email, mqtt and sms messages from Domoticz Blockly rules
+# domoticz-email-mqtt-sms-telegram
+Simple scripts to send email, mqtt, sms and telegram messages from Domoticz Blockly rules
 
 ## Overview
 These scripts were created to overcome 4 issues when running a Docker Domoticz container:
