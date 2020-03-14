@@ -1,4 +1,12 @@
 #!/bin/bash
-# Set the path to the script. See the README for using a directory within the Domoticz container. 
-# The default /config/ presumes you have stored the python script within the mapped directory.
-python3 /config/send-mqtt.py "$@"
+# This script presumes you have stored the python script within the same folder as this sh. script.
+# For a Docker implementation this is normally in /config/ which is mapped to your folder outside of Docker.
+#
+# Get the path to the scripts. 
+PATH="`dirname \"$0\"`"
+if [[ $PATH == "." ]]; then
+    myPath=""
+else
+    myPath="${PATH}/"
+fi
+${myPath}send-mqtt.py "$@"
