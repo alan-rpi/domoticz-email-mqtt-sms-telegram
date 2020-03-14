@@ -1,5 +1,6 @@
-# domoticz-email-mqtt-sms-telegram
-Simple scripts to send email, mqtt, sms and telegram messages from Domoticz Blockly rules
+# domoticz-email-mqtt
+Scripts to send email, mqtt and sms messages from Domoticz Blockly rules. 
+Plus a script to invoke 1 to 4 of these scripts with a single call from Blockly.
 
 ## Overview
 These scripts were created to overcome 4 issues when running a Docker Domoticz container:
@@ -12,7 +13,9 @@ These scripts were created to overcome 4 issues when running a Docker Domoticz c
 
 4. Whilst there was an Domoticz Blockly SMS component it was tied to a US company. This SMS script is linked to a UK company, thesmsworks.co.uk . This company has been used by the author for testing but users should make their own evaluation as to the suitability, compentancies and pricing model of the company. The configuration file does allow another SMS service provider to be specified but whether the script will work is unknown.
 
-These scripts may be used together or separately. Each of the 3 solutions consists of a Python script, a Yaml Configuration file, and a Bash script. They can also be used on a non Docker system.
+These scripts may be used together or separately. Each of the 4 solutions consists of a Python script, a Yaml Configuration file, and a Bash script. They can also be used on a non Docker system.
+
+Addionally the send-to.sh script can be used with a control arguement to send a common message to one or more of the 4 scripts, thus reducing the number of Start Script commands.
 
 ## Requirements
 domoticz
@@ -35,19 +38,12 @@ Feel free to make an issue or pull request [here](https://github.com/alan-rpi/do
 Download the scripts to a Linux machine and edit using your favourite editor (e.g. nano or vi) edit the user settings as described below. Do not edit on a Windows PC as the new line (CR) format upsets Linux. On a Windows PC you can use Visual Studio and access the files via a shared folder.
 
 ## Bash Scripts send-email.sh, send-mqtt.sh, send-sms.sh and send-telegram.sh 
-After downloading edit the script to set the path to the python script relative to the invoked folder in Domoticz. This has been tested on a system where they were stored within the user's mapped Volumes folder defined in the Docker run command or the Docker compose file, e.g.
+These Bash .sh scripts presume they are placed in the same folder as the python scripts. They have been tested on a system where they were stored within the user's mapped Volumes folder defined in the Docker run command or the Docker compose file, e.g.
 ```
 volumes:
       - /home/pi/docker/domoticz-data:/config
 ```
-and then the Bash script files contain:
-```
-      python3 /config/send-email.py "$@"
-      python3 /config/send-mqtt.py "$@"
-      python3 /config/send-sms.py "$@"
-      python3 /config/send-telegram.py "$@"
-```
-With this method the Blockly Rules within Domoticz will need prefixing with "/config/". The advantage is that the script can be edited from a Windows PC with Visual Studio using a share to the mapped folder on the machine running Docker. If you chose this option then the Bash .sh files do not need to be editted.
+With this method the Blockly Rules within Domoticz will need prefixing with "/config/". The advantage is that the script can be edited from a Windows PC with Visual Studio using a share to the mapped folder on the machine running Docker. 
 
 Alternatively, store the scripts within the default location for Domoticz scripts which the author believes is "/src/domoticz/scripts/" within the Domoticz container. No path should be needed if the python scripts are in the same folder. Note the author has only tried the mapped folder method.
 
@@ -59,6 +55,13 @@ Ensure the .sh files have the correct execute permissions with:
     sudo chmod 771 send-telegram.sh 
 ```
 This is because the scripts will be run under root within Domoticz but they will belong to your user ID.
+
+## Bash Script send-to.sh
+This Bash script allows a single Blockly Start Script to request that messages are sent to one to four of the above scripts. Again set the above persmissions.
+```
+    sudo chmod 771 send-to.sh 
+```
+See the script file and Usage below for more information.
 
 ## Python Scripts send-email.py, send-mqtt.py, send-sms.py and send-telegram.py
 As above with the bash .sh scripts, download, set the same permissions and store either in the user's mapped folder, or in the Domoticz default folder, or if using Domoticz's editor then they are stored in the database. Note the author has only tried the mapped folder method. These files do not need editting.
@@ -125,59 +128,51 @@ Note that the email account password, sms API key and telegram API key and chat 
 
 ## send-email
 
-Blochly Usage:      Start Script: 
-```
-</optional path to bash script/>send-email.sh
-```
-with parameter(s):
-```
-"<message>" "<subject>" "<email address(s)>" "<Y/N timestamp option">  
-```
+Blochly Usage:      Start Script: <optional path to bash script/>send-email.sh  
+                    with parameter(s): "<message>" "<subject>" "<email address(s)>" "<Y/N timestamp option">    
                         - all arguements are optional and then defaults will apply
+                        - see the send-email.py script for more information and examples.
                         - provide null "" if there are subsequent arguements
 
 Arguement values: See the comments at the start of the python script. Some arguements allow a "+" prefix to suffix the default value.
 
 ## send-mqtt
- Blochly Usage:    Start Script: 
- ```
- </optional path to bash script/>send-mqtt.sh
- ```
- with parameter(s): 
- ```
- "<topic>" "<value>" "<Y/N timestamp option">    
- ```
+ Blochly Usage:    Start Script: <optional path to bash script/>send-mqtt.sh  
+                   with parameter(s): "<topic>" "<value>" "<Y/N timestamp option">    
                         - all arguements are optional and then defaults will apply
+                        - see the send-mqtt.py script for more information and examples.
                         - provide null "" if there are subsequent arguements
 
 Arguement values: See the comments at the start of the python script. Some arguements allow a "+" prefix to suffix the default value.
 
 ## send-sms
- Blochly Usage:    Start Script: 
- ```
- </optional path to bash script/>send-sms.sh
- ```
- with parameter(s): 
- ```
- "<message text>" "<to number(s)>"  "<sender number or ID>"  "<message tag>"  "<Y/N timestamp option"> 
- ```
+ Blochly Usage:    Start Script: <optional path to bash script/>send-sms.sh  
+                   with parameter(s): "<message text>" "<to number(s)>"  "<sender number or ID>"  
+                                      "<message tag>"  "<Y/N timestamp option"> 
                         - all arguements are optional and then defaults will apply
+                        - see the send-sms.py script for more information and examples.
                         - provide null "" if there are subsequent arguements
 
 Arguement values: See the comments at the start of the python script. Some arguements allow a "+" prefix to suffix the default value.
 
 ## send-telegram
-Blochly Usage:    Start Script: 
-```
-</optional path to script>/send-telegram.sh  
-```
-with parameter(s): 
-```
-"<message text>" "<chat ID>" "<parse option>"   "<Y/N silent option>"  "<Y/N timestamp option"> 
-```
+Blochly Usage:    Start Script: <optional path to script>/send-telegram.sh  
+                   with parameter(s): "<message text>" "<chat ID>" "<parse option>"                   
+                                    "<Y/N silent option>"  "<Y/N timestamp option"> 
                         - all arguements are optional and then defaults will apply
+                        - see the send-telegram.py script for more information and examples.
                         - provide null "" if subsequent arguements
-                   
+## send-to
+Blochly Usage:    Start Script: <optional path to script>/send-to.sh  
+                   with parameter(s): "<list of function IDs to call>" "<message>" "<subject>"
+                                    "<topic>" "<Y/N datetimestamp option>"
+                        - the list of function IDs indicate which of the other scripts to call.
+                        - the IDs are E for Email, S for SMS, M for MQTT and T for Telegram.
+                              e.g. "EMT" 
+                        - all other arguements are optional and then defaults will apply
+                        - see the send-to.sh script for more information and examples.
+                        - provide null "" if subsequent arguements
+
 ## Testing
 Both the Bash and Python scripts can be tested via the command line and this will display any errors. Make sure the paths are correct for both the CLI command and within the Bash sh. script. E.g.
  ```
@@ -186,5 +181,6 @@ Both the Bash and Python scripts can be tested via the command line and this wil
 or    send-email.sh "garage door is open" "hms alert" "me@emailaddress.com"
 or    python3 send-sms.py "hms alert - garage door is open" "077123456,072345678"
 or    send-telegram.sh "<b>hms alert</b> - garage door is open" "" "html"
+or    send-to "EMST" "garage door is open" "hms alert" "hms/alert" 
 ```
 
