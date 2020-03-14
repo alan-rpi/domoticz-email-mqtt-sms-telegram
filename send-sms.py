@@ -37,7 +37,9 @@
 #       Added date & time stamp option
 #       Convert message to GSM 03.38 encoding
 #       Configutation setting are now in a send-sms-config.yml file
-# AEC 2020-03-10
+# Version 2.2
+#       applied .upper() to datetimestamp
+# AEC 2020-03-14
 # License: GNU General Public License v3.0
 #
 # User setting are defined in the send-sms-config.yml file
@@ -128,12 +130,12 @@ class sendsms:
 
         # datetimestamp is an optional 5th user arguement 
         if len(arguements) >= 6:
-            if arguements[5] == "Y":   
+            if arguements[5].upper() == "Y":   
                 datetimestamp = "Y" 
             else:
                 datetimestamp = "N" 
         else:
-            datetimestamp = DATETIMESTAMP
+            datetimestamp = DATETIMESTAMP.upper()
         # apply datetimestamp option, either default or message override option
         if datetimestamp == "Y":
             now = datetime.now()

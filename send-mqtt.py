@@ -12,9 +12,10 @@
 #   Examples:   "MyTopic/SubTopicA"     => "MyTopic/SubTopicA"
 #               "+SubTopicB"            => "MyTopic/SubTopicA/SubTopicB"
 #               "" or omitted           => "DefaultTopic/DefaultSubTopic"
-# 2. value 
-#   Examples:   "0"     => "0"
-#               ""      => "DefaultValue"
+# 2. value  - can prefix with "+" to append the value to the default value
+#   Examples:   "0"                     => "0"
+#               "+my extra value"       => "DefaultValue my extra value"
+#               ""                      => "DefaultValue"
 # 3. datetimestamp - set to Y if the Value is to be appended with a date and time stamp
 #                   Format is according to the DATETIMEFORMAT setting
 #       Examples when Y: and DATETIMEFORMAT = " at %Y-%m-%d %H:%M:%S"
@@ -28,7 +29,10 @@
 # Version 2.1
 #       Added date & time stamp option
 #       Configutation setting are now in a send-mqtt-config.yml file
-# AEC 2020-03-05
+#  Version 2.2
+#       +option applies to Value
+#       .upper() applied to datetimestamp
+# AEC 2020-03-14
 # License: GNU General Public License v3.0
 
 import paho.mqtt.client as paho     # pip3 install paho-mqtt
@@ -78,17 +82,24 @@ class sendmqtt:
         # value  is passed as the 2nd arguement
         if len(arguements) >= 3:
             value = arguements[2]
+            if value != "":       # not null
+                if value[0:1] == "+":
+                    value = VALUE + ' ' + value[1:]
+                else:
+                    value = arguements[2]
+            else:
+                value = VALUE                 
         else:
             value = VALUE                 
 
         # datetimestamp is an optional 3rd user arguement 
         if len(arguements) >= 4:
-            if arguements[3] == "Y":   
+            if arguements[3].upper() == "Y":   
                 datetimestamp = "Y" 
             else:
                 datetimestamp = "N" 
         else:
-            datetimestamp = DATETIMESTAMP
+            datetimestamp = DATETIMESTAMP.upper()
         # apply datetimestamp option, either default or override option
         if datetimestamp == "Y":
             now = datetime.now()

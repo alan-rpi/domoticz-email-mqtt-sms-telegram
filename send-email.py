@@ -29,7 +29,9 @@
 # Version 2.1   
 #       Added date & time stamp option
 #       Configutation setting are now in a send-email-config.yml file
-# AEC 2020-03-10
+# Version 2.2
+#       applied .upper() to datetimestamp 
+# AEC 2020-03-14
 # License: GNU General Public License v3.0
 #
 # User setting are defined in the send-sms-config.yml file
@@ -92,6 +94,7 @@ class sendemail:
 
         # to addresses are an optional 3rd parameter
         # may be one or more email addresses, either full or just names, separated by commas
+        
         if len(arguements) >= 4:
             if arguements[3] == "":    
                 toAddressList = TO_ADDRESS
@@ -100,6 +103,7 @@ class sendemail:
         else:
             toAddressList = TO_ADDRESS
         toAddresses = toAddressList.split(",")
+
         # process each one
         comma = ""
         newAddressList = ""
@@ -118,12 +122,12 @@ class sendemail:
 
         # datetimestamp is an optional 4th user arguement 
         if len(arguements) >= 5:
-            if arguements[4] == "Y":   
+            if arguements[4].upper() == "Y":   
                 datetimestamp = "Y" 
             else:
                 datetimestamp = "N" 
         else:
-            datetimestamp = DATETIMESTAMP
+            datetimestamp = DATETIMESTAMP.upper()
         # apply datetimestamp option, either default or message override option
         if datetimestamp == "Y":
             now = datetime.now()
@@ -140,7 +144,7 @@ class sendemail:
         msg['From']=FROM_ADDRESS
         msg['Subject']=subject
         msg.attach(MIMEText(message, 'plain'))
-        
+
         # send the message via the server set up earlier.
         s.send_message(msg)
         del msg
