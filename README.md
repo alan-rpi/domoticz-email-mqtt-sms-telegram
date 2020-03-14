@@ -127,7 +127,7 @@ Note that the email account password, sms API key and telegram API key and chat 
 
 Blochly Usage:      Start Script: 
 ```
-<optional path to bash script/>send-email.sh
+</optional path to bash script/>send-email.sh
 ```
 with parameter(s):
 ```
@@ -141,7 +141,7 @@ Arguement values: See the comments at the start of the python script. Some argue
 ## send-mqtt
  Blochly Usage:    Start Script: 
  ```
- <optional path to bash script/>send-mqtt.sh
+ </optional path to bash script/>send-mqtt.sh
  ```
  with parameter(s): 
  ```
@@ -155,7 +155,7 @@ Arguement values: See the comments at the start of the python script. Some argue
 ## send-sms
  Blochly Usage:    Start Script: 
  ```
- <optional path to bash script/>send-sms.sh
+ </optional path to bash script/>send-sms.sh
  ```
  with parameter(s): 
  ```
@@ -169,7 +169,7 @@ Arguement values: See the comments at the start of the python script. Some argue
 ## send-telegram
 Blochly Usage:    Start Script: 
 ```
-<optional path to script>/send-telegram.sh  
+</optional path to script>/send-telegram.sh  
 ```
 with parameter(s): 
 ```
