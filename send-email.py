@@ -31,7 +31,9 @@
 #       Configutation setting are now in a send-email-config.yml file
 # Version 2.2
 #       applied .upper() to datetimestamp 
-# AEC 2020-03-14
+# Version 2.3
+#       corrected datetimestamp option when null ("")
+# AEC 2020-03-31
 # License: GNU General Public License v3.0
 #
 # User setting are defined in the send-sms-config.yml file
@@ -122,10 +124,10 @@ class sendemail:
 
         # datetimestamp is an optional 4th user arguement 
         if len(arguements) >= 5:
-            if arguements[4].upper() == "Y":   
-                datetimestamp = "Y" 
+            if arguements[4].upper() != "":   
+                datetimestamp = arguements[4].upper()
             else:
-                datetimestamp = "N" 
+                datetimestamp = DATETIMESTAMP.upper()    
         else:
             datetimestamp = DATETIMESTAMP.upper()
         # apply datetimestamp option, either default or message override option
